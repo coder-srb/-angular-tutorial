@@ -1,0 +1,10 @@
+<h2>Sorted Players: (Ascending by Score)</h2>
+
+<ul>
+    <li *ngFor="let player of players | sortByScore | slice:0:5">
+        <strong>{{player.name | titlecase}}</strong> ({{player.id | lowercase}}) <br />
+        Score: {{ player.score | percent : '1.2-2' }} <br />
+        Online: {{ (player.online ? 'Yes' : 'No') | uppercase }}<br />
+        Gems: {{ player.gems.join(', ') | lowercase }}
+    </li>
+</ul>
