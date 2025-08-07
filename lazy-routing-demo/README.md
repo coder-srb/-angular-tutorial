@@ -1,27 +1,67 @@
-# LazyRoutingDemo
+# 🧠 Angular Routing: Lazy Loading Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.4.
+## ✅ 2. LAZY LOADING PROJECT
+#### What is Lazy Loading in Angular?
+Lazy loading is a design pattern in Angular used to improve application performance by loading feature modules only when they’re needed — that is, on-demand, instead of during the initial app load.
 
-## Development server
+##### 🧠 Simple Definition:
+Lazy Loading means deferring the loading of a module (and its associated components, services, etc.) until the user navigates to a route that requires it.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+### 🔹 Step 1: Create Project
+```bash
+ng new lazy-routing-demo
+cd lazy-routing-demo
+```
 
-## Code scaffolding
+### 🔹 Step 2: Generate Lazy-Loadable Modules
+```bash
+ng generate module features/home --route home --module app.module
+ng generate module features/about --route about --module app.module
+ng generate module features/dashboard --route dashboard --module app.module
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+> This will:
+> - Create each module
+> - Add routing automatically
+> - Setup lazy loading in `app.routes.ts` (if using --standalone mode)
+> - Or in `app-routing.module.ts` using `loadChildren`
 
-## Build
+### 🔹 Step 3: Check `app-routing.module.ts`
+```ts
+const routes: Routes = [
+  {
+    path: 'home',
+    loadChildren: () =>
+      import('./features/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: 'about',
+    loadChildren: () =>
+      import('./features/about/about.module').then((m) => m.AboutModule),
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home' },
+];
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### 🔹 Step 4: Update `app.component.html`
+```html
+<h1>Lazy Loading Demo</h1>
+<nav>
+  <a routerLink="/home">Home</a> |
+  <a routerLink="/about">About</a> |
+  <a routerLink="/dashboard">Dashboard</a>
+</nav>
+<hr />
+<router-outlet></router-outlet>
+```
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### ✅ Done! Run:
+```bash
+ng serve
+```
