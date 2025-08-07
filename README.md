@@ -109,3 +109,79 @@ Use `standalone` for faster development and better modularity. Only fall back to
 - `StandaloneComponent` imports a `StandaloneDirective`
 - `TraditionalComponent` uses a directive declared in `SharedModule`
 
+---
+
+
+
+# Angular Routing: Eager vs Lazy Loading
+
+## 🔷 What is Eager Loading?
+
+**Eager Loading** means Angular loads **all modules and components** at **application startup**, whether they are needed immediately or not.
+
+### ✅ Characteristics:
+- Default behavior in Angular
+- All routes are preloaded in the main JavaScript bundle
+- Increases **initial load time** for large apps
+
+### ✅ Use Cases:
+- Small applications
+- Frequently used features (e.g., Home, Login, Dashboard)
+
+### ✅ Example:
+```ts
+// app-routing.module.ts
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'dashboard', component: DashboardComponent }
+];
+```
+
+---
+
+## 🔷 What is Lazy Loading?
+
+**Lazy Loading** means Angular loads a module **only when the user navigates to its route**.
+
+### ✅ Characteristics:
+- Modules are split into separate bundles (chunks)
+- Loaded **on demand**
+- Reduces **initial load time**
+- Achieved using **loadChildren** or **loadComponent** in routing.
+
+### ✅ Use Cases:
+- Large applications
+- Rarely accessed features (e.g., Admin, Reports, Settings)
+
+### ✅ Example:
+```ts
+// app-routing.module.ts
+const routes: Routes = [
+  {
+    path: 'about',
+    loadChildren: () =>
+      import('./features/about/about.module').then(m => m.AboutModule)
+  }
+];
+```
+
+---
+
+## 🔁 Comparison Table
+
+| Feature             | Eager Loading                     | Lazy Loading                             |
+|---------------------|-----------------------------------|-------------------------------------------|
+| **Load Timing**     | At app startup                    | When route is visited                     |
+| **Initial Load**    | Slower for large apps             | Faster                                    |
+| **Use Case**        | Core & common routes              | Heavy or rarely visited modules           |
+| **Setup**           | Simple                            | Requires `loadChildren` and modules       |
+
+---
+
+## ✅ Summary
+
+- Use **Eager Loading** for core routes/components.
+- Use **Lazy Loading** for performance optimization in large apps.
+
+
