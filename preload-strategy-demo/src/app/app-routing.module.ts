@@ -22,6 +22,12 @@ const routes: Routes = [
     title: 'Contact'
   },
   {
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+    data: { preload: true },  // <-- enable preloading for this route
+    title: 'Dashboard'
+  },
+  {
     path: '**',
     redirectTo: '',
   }
