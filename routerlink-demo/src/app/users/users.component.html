@@ -1,0 +1,14 @@
+<h2>Users</h2>
+
+<!-- Example 1: array syntax (recommended for multiple segments) -->
+<ul>
+  <li *ngFor="let u of users" [routerLinkActive]="['selected']" [routerLinkActiveOptions]="{ exact: true }">
+    <a [routerLink]="['/users', u.id]">{{ u.name }}</a>
+  </li>
+</ul>
+
+
+<!-- Example 3: routerLink with a string (works but less flexible) -->
+<p>
+  <a routerLink="/users/100">User 100 (static)</a>
+</p>
